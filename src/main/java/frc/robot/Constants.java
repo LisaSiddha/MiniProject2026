@@ -33,6 +33,11 @@ public final class Constants {
   public static final class FeederConstants{
     public static final int CANRANGE_CAN_ID = 25;
     public static final double IS_HOPPER_EMPTY_BUFFER_TIME = 1.1; // 2 TODO: try to shorten
+    public static final int FEEDER_MOTOR_ID = 1; //TODO
+    public static final double CURRENT_LIMIT_AMPS = 1.2;
+    public static final double FEEDER_MOTOR_VOLTS = 1.2;
+    public static final double FEEDER_REVERSE_VOLTS = 1.2;
+ 
     
   }
 
