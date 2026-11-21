@@ -15,10 +15,10 @@ import frc.robot.Constants.IntakeConstants;
 public class Intake extends SubsystemBase {
   
  
-  private final TalonFX PIVOT_LEFT = new TalonFX(IntakeConstants.PIVOT_LEFT_ID);
-  //private final TalonFX PIVOT_RIGHT = new TalonFX(IntakeConstants.PIVOT_RIGHT_ID);
-  private final TalonFX ROLLER_LEFT = new TalonFX(IntakeConstants.ROLLER_FOLLOWER_ID);
-  private final TalonFX ROLLER_RIGHT = new TalonFX(IntakeConstants.ROLLER_LEADER_ID);
+  private final TalonFX PIVOT_MOTOR = new TalonFX(IntakeConstants.PIVOT_ID);
+  
+  private final TalonFX ROLLER_LEADER = new TalonFX(IntakeConstants.ROLLER_FOLLOWER_ID);
+  private final TalonFX ROLLER_FOLLOWER = new TalonFX(IntakeConstants.ROLLER_LEADER_ID);
  
   private final MotionMagicDutyCycle pivotRequest = new MotionMagicDutyCycle(0);
   private final VoltageOut rollerRequest = new VoltageOut(0);
@@ -26,7 +26,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     TalonFXConfiguration pivotConfig = new TalonFXConfiguration();
     pivotConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-    pivotConfig.Feedback.SensorToMechanismRatio = IntakeConstants.PIVOT_GEARING; 
+    pivotConfig.Feedback.SensorToMechanismRatio = IntakeConstants.PIVOT_GEAR_RATIO; 
     pivotConfig.Slot0.kP = 4.0; // tODO: tune this
     pivotConfig.MotionMagic.MotionMagicCruiseVelocity = 1.0;
     pivotConfig.MotionMagic.MotionMagicAcceleration = 3.0;
@@ -39,10 +39,9 @@ public class Intake extends SubsystemBase {
     pivotConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Units.degreesToRotations(IntakeConstants.STOWED_DEGS - 5);
  
     pivotConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    PIVOT_LEFT.getConfigurator().apply(pivotConfig);
+    PIVOT_MOTOR.getConfigurator().apply(pivotConfig);
     pivotConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive; // mirror
-   // PIVOT_RIGHT.getConfigurator().apply(pivotConfig);
- 
+   
    
     TalonFXConfiguration rollerConfig = new TalonFXConfiguration();
     rollerConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
@@ -50,24 +49,24 @@ public class Intake extends SubsystemBase {
     rollerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
  
     rollerConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    ROLLER_LEFT.getConfigurator().apply(rollerConfig);
+    ROLLER_LEADER.getConfigurator().apply(rollerConfig);
     rollerConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-    ROLLER_RIGHT.getConfigurator().apply(rollerConfig);
+    ROLLER_FOLLOWER.getConfigurator().apply(rollerConfig);
  
    
-    PIVOT_LEFT.setPosition(Units.degreesToRotations(IntakeConstants.STOWED_DEGS));
-    //PIVOT_RIGHT.setPosition(Units.degreesToRotations(IntakeConstants.STOWED_DEGS));
+    PIVOT_MOTOR.setPosition(Units.degreesToRotations(IntakeConstants.STOWED_DEGS));
+   
   }
  
   private void setPivot(double degrees) {
     double rotations = Units.degreesToRotations(degrees);
-    PIVOT_LEFT.setControl(pivotRequest.withPosition(rotations));
-    //PIVOT_RIGHT.setControl(pivotRequest.withPosition(rotations));
+    PIVOT_MOTOR.setControl(pivotRequest.withPosition(rotations));
+    
   }
  
   private void setRollers(double volts) {
-    ROLLER_LEFT.setControl(rollerRequest.withOutput(volts));
-    ROLLER_RIGHT.setControl(rollerRequest.withOutput(volts));
+    ROLLER_LEADER.setControl(rollerRequest.withOutput(volts));
+    ROLLER_FOLLOWER.setControl(rollerRequest.withOutput(volts));
   }
  
   

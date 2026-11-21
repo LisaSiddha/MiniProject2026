@@ -8,11 +8,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.DriveCommands;
 import frc.robot.subsystems.Drive;
-//import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Launcher;
 import frc.robot.subsystems.Spindexer;
-//import frc.robot.subsystems.Spindexer;
+import frc.robot.subsystems.Turret;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -48,6 +48,9 @@ private final Drive Drive = new Drive();
 private final Intake Intake = new Intake();
 private final Spindexer Spindexer = new Spindexer();
 private final Launcher Launcher= new Launcher();
+private final Feeder Feeder = new Feeder();
+private final Turret Turret = new Turret();
+
   // Controllers
   private final CommandXboxController driverController =
       new CommandXboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -62,7 +65,6 @@ private final Launcher Launcher= new Launcher();
   }
  
   private void configureBindings() {
-    // Hold right bumper to spin the spindexer, left bumper to back it out (unjam)
 
     driverController
         .leftBumper()
@@ -75,8 +77,10 @@ private final Launcher Launcher= new Launcher();
         
 
     driverController.rightBumper()
-      .whileTrue(new InstantCommand(() -> Launcher.launch()))
-      .whileTrue(new InstantCommand(() -> Spindexer.spinCommand()));
+      .whileTrue(new InstantCommand(() -> Launcher.launch(() -> 3.0)))
+      .whileTrue(new InstantCommand(() -> Spindexer.spinCommand()))
+      .whileTrue(new InstantCommand(() -> Feeder.feederFeed()))
+      .whileTrue(new InstantCommand(() -> Turret.trackHub(Drive::getPose)));
         //.whileFalse(new InstantCommand(() -> Launcher.));
 
     driverController

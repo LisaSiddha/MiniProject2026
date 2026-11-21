@@ -14,12 +14,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LauncherConstants;
  
-/** The wheel that flings the fuel. Two motors spin it. */
+
 public class Launcher extends SubsystemBase {
             
  
-  private final TalonFX leftMotor = new TalonFX(LauncherConstants.LAUNCHER_LEFT_ID);
-  private final TalonFX rightMotor = new TalonFX(LauncherConstants.LAUNCHER_RIGHT_ID);
+  private final TalonFX leftMotor = new TalonFX(LauncherConstants.LAUNCHER_LEADER_ID);
+  private final TalonFX rightMotor = new TalonFX(LauncherConstants.LAUNCHER_FOLLOWER_ID);
  
   private final VelocityTorqueCurrentFOC spinAtVelocity = new VelocityTorqueCurrentFOC(0); 
   private final NeutralOut turnOff = new NeutralOut();                                 
@@ -70,9 +70,4 @@ public class Launcher extends SubsystemBase {
     SmartDashboard.putNumber("Launcher target rps", targetRps);
     SmartDashboard.putNumber("Launcher real rps", getRealRps());
   }
-
-public static Object launch() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'launch'");
-}
 }

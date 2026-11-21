@@ -16,7 +16,7 @@ public class Feeder extends SubsystemBase {
     settings.MotorOutput.NeutralMode = NeutralModeValue.Brake;
     settings.CurrentLimits.StatorCurrentLimit = FeederConstants.CURRENT_LIMIT_AMPS;
     settings.CurrentLimits.StatorCurrentLimitEnable = true;
-    motor.getConfigurator().apply(settings); // if it spins the wrong way, set MotorOutput.Inverted here
+    motor.getConfigurator().apply(settings); 
   }
  
   public void setVolts(double volts) {

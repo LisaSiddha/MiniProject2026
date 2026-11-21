@@ -91,17 +91,17 @@ public class Drive extends SubsystemBase {
   }
  
  
-  /** Drive using speeds in meters per second. "Forward" always means away from the driver. */
+ 
   private void drive(double forwardSpeed, double sidewaysSpeed, double turnSpeed) {
     Rotation2d facing = getPose().getRotation();
     if (onRedAlliance()) {
-      facing = facing.plus(Rotation2d.fromDegrees(180)); // red driver stands on the other side
+      facing = facing.plus(Rotation2d.fromDegrees(180)); // red driver on the other side
     }
     ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(forwardSpeed, sidewaysSpeed, turnSpeed, facing);
  
-    // Turn that into what each wheel should do
+  
     SwerveModuleState[] wheels = kinematics.toSwerveModuleStates(speeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(wheels, DriveConstants.MAX_SPEED); // don't ask for more than the robot can do
+    SwerveDriveKinematics.desaturateWheelSpeeds(wheels, DriveConstants.MAX_SPEED);
     frontLeft.setState(wheels[0]);
     frontRight.setState(wheels[1]);
     backLeft.setState(wheels[2]);
@@ -217,7 +217,7 @@ public class Drive extends SubsystemBase {
     return DriveConstants.MAX_SPEED; 
   }
  
-  /** Returns the maximum angular speed in radians per sec. */
+  //max angular speed
   public double getMaxAngularSpeedRadPerSec() {
     return getMaxLinearSpeedMetersPerSec() / DRIVE_BASE_RADIUS;
   }
